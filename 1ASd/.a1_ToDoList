@@ -1,0 +1,89 @@
+
+//test
+
+// done
+# worker
+# mazání fotek společně s company
+
+// errors
+# pagination
+
+//ToDo
+# udělat pivot company-uživatel
+# poslat znovu request po přídání (projekt->přídání uživatele)
+# database worktime (on delete('set to null'))
+# request na mobil (9 číslic pouze)
+# dashboard doughnut (pořadí dat)
+# jak z url dostat ID (employee/{id}/profile) do NAVBARU ()
+
+
+START
+
+nainstalovat -> mysqldump
+             -> database -> (dump_binary_path)
+
+
+https://github.com/rappasoft/laravel-authentication-log#readme
+
+php artisan backup:run --only-db
+
+ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV  ENV
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+    nastavit peníze za hodinu
+        hodiny * peníze
+
+    Sjednotit PROFIL a SHOW dohromady
+
+        employee/{id}/show  || uživatel
+           -nahoře na webu by byly informace o uživatelovi
+               ->informace o uživatelovi
+               ->plat za den
+               ->plat za týden
+               ->plat za měsíce
+               -> do databáze přidat políčko zároveň s prací peníze za hodinu
+
+           -dole historie práce
+               ->přidat práci
+               ->historie práce (rok - měsíce)
+               ->detaily o práci
+
+        /dashboard/employee/{id}/show || pro admina
+           -typy firem
+           -smlouva (brigádník, hpp)
+           -plat na hodinu
+
+        /dashboard/employee/{id}/show?year=2022&month=6
+          -dodělat modální delete
+          -dodělat modální update
+
+////////////////////////////////////////////////////////////////////////////////////////
+DASHBOARD
+    výdaje - hotovo
+    graficky - hotovo
+    nově přidané záznamy - hotovo
+    uživatelé
+        -edít
+        -smazat
+    projekty
+        -smazat společně s uživateli v ProjectUser
+
+
+    country = company
+    city = projects
+    shop = employee
+    employee = worktime
+
+////////////////////////////////////////////////////////////////////////////////////////
+    DASHBOARD
+        Company
+            ->project
+            ->worktime
+            ->hours * money_per_hour
+
+

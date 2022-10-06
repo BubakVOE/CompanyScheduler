@@ -1,0 +1,27 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-toggler {
+    border: none;
+    font-size: medium;
+    color: inherit;
+    &:focus {
+        outline: 0;
+        box-shadow: none;
+    }
+}
+.navbar-toggler-icon {
+    background-image: none !important;
+    width: auto;
+    height: auto;
+}
+
+.card-statistics {
+    margin: .25rem;
+}
