@@ -36,9 +36,9 @@ class Company extends Model
         return $this->hasMany(Project::class);
     }
 
-    public function test()
+    public function employees()
     {
-        return $this->hasManyThrough(User::class, [ProjectUsers::class, Project::class]);
+        return $this->hasManyThrough(User::class, Project::class);
     }
 
     public function works()
@@ -46,15 +46,16 @@ class Company extends Model
         return $this->hasManyThrough(WorkTime::class, Project::class);
     }
 
-
-
-    public function employees()
+    public function test()
     {
-        return $this->hasManyThrough(
-            User::class,
-            ProjectUsers::class,
-        );
+        return $this->hasManyThrough(User::class, [ProjectUsers::class, Project::class]);
     }
+
+
+
+
+
+
 
     // public function employees()
     // {

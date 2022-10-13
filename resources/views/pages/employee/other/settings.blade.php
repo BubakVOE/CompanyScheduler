@@ -1,5 +1,11 @@
 @extends('layouts.universalLayouts')
 @section('content')
-    <projects-of-company>
-    </projects-of-company>
+
+
+<blade-settings
+    :user = '{{ $user }}'
+>
+</blade-settings>
+
 @endsection
+

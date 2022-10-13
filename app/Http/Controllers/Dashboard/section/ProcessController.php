@@ -69,10 +69,12 @@ class ProcessController extends Controller
                     ]);
                 }
 
-                return ['success' => true];
+                return [
+                    'success' => true,
+                    'company' => $company->id,
+                ];
+
             }
         }
-
-        return 'test';
     }
 }

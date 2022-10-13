@@ -106,7 +106,7 @@
                                         </button>
                                     </form>
 
-                                    <a :href="'/dashboard/companies/' + company.id + '/projects'"
+                                    <a :href="'/dashboard/companies/' + company.id"
                                         class="btn btn-secondary ">
                                         zobrazit
                                     </a>
@@ -154,8 +154,8 @@
                                         <input type="text" class="form-control" v-model="company_create.name"
                                             placeholder="název společnosti" name="name">
 
-                                        <template v-if="errors.name">
-                                            <p v-for="error in errors.name"
+                                        <template v-if="create_errors.name">
+                                            <p v-for="error in create_errors.name"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -167,8 +167,8 @@
                                     <div class="py-3">
                                         <input type="file" class="form-control" v-on:change="onChange">
 
-                                        <template v-if="errors.file">
-                                            <p v-for="error in errors.file"
+                                        <template v-if="create_errors.file">
+                                            <p v-for="error in create_errors.file"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -184,8 +184,8 @@
                                         <input type="color" v-model="company_create.color">
 
 
-                                        <template v-if="errors.color">
-                                            <p v-for="error in errors.color"
+                                        <template v-if="create_errors.color">
+                                            <p v-for="error in create_errors.color"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -337,7 +337,7 @@ export default {
 
             companies: [],
 
-            errors: {},
+            create_errors: {},
             update_errors: {},
         }
     },
@@ -379,7 +379,7 @@ export default {
             data.append('color', this.company_create.color);
 
             axios
-                .post('/dashboard/companies/createNewCompany', data, config)
+                .post('/dashboard/companies/createCompany', data, config)
                 .then((response) => {
 
                     if (response.data.success == true) {
@@ -407,9 +407,12 @@ export default {
                             showConfirmButton: true,
                         });
                     }
+
+                    this.create_errors = ''
+
                 }).catch(({ response }) => {
                     console.log(response.data.errors)
-                    this.errors = response.data.errors
+                    this.create_errors = response.data.errors
                 })
 
         },
@@ -452,6 +455,7 @@ export default {
 
                         console.log("updateCompany - Company byla upravena")
 
+                        this.update_errors= ''
 
                     }
 

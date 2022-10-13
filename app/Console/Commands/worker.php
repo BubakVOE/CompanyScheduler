@@ -39,11 +39,10 @@ class worker extends Command
         $last_database_backup = Carbon::now()->subDay();
         while (1) {
             try {
-                if($last_database_backup < Carbon::now()->subDay()){
+                if ($last_database_backup < Carbon::now()->subDay()) {
                     $backup_path = SofticiBackup::databaseBackup();
-                    SofticiBackup::backupDB($backup_path,'sql');
+                    SofticiBackup::backupDB($backup_path, 'sql');
                 }
-                sleep(3200);
             } catch (\Exception $e) {
                 echo $e->getMessage();
                 sleep(60);

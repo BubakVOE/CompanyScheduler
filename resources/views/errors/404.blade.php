@@ -1,4 +1,4 @@
-@extends('layouts/app')
+@extends('layouts.universalLayouts')
 @section('content')
 
     <h1>

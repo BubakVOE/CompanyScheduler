@@ -40,7 +40,22 @@ class EmployeeAxiosController extends Controller
                 ->get()
                 ->sortByDesc('date');
 
-            return $works_for_month;
+
+            $count_works = count($works_for_month);
+
+            $obj_hours = $works_for_month->pluck('hours');
+
+            $count_hours = 0;
+
+            foreach ($obj_hours as $hours) {
+                $count_hours = $count_hours + $hours;
+            }
+
+            return [
+                'works_for_month' => $works_for_month,
+                'count_works' => $count_works,
+                'count_hours' => $count_hours,
+            ];
         } else {
             $works_for_month = 0;
 
@@ -59,6 +74,64 @@ class EmployeeAxiosController extends Controller
         return [
             'user' => $user
         ];
+    }
 
+
+    public function getYears($id){
+        
+    }
+
+
+    public function dataByYear(Request $request, $id)
+    {
+        
+        $year = $request->year;
+
+        $user = User::findOrFail($id);
+
+
+        $last_year_start = Carbon::now()
+            ->startOfYear()
+            ->format($year.'-m-d');
+            //->format($year.'-d-m');
+
+
+        $last_year_end = Carbon::now()
+            ->endOfYear()
+            ->format($year.'-m-d');
+
+
+        $graph_data = [
+            'labels' => [],
+            'datasets' => [],
+        ];
+
+        $graph_data['labels'] = ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'];
+
+        //DATASETS
+        $data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        $work_times = WorkTime::whereIn('user_id', [$user->id])
+            ->where('date', '>=', $last_year_start)
+            ->where('date', '<=', $last_year_end)
+            ->get();
+
+        foreach ($work_times as $work) {
+            $key = (Carbon::make($work->date)->format('m') * 10) / 10;
+
+            $data[$key] += $work->money_per_hour*$work->hours;
+        }
+
+        $dataset = [
+            'label' => $user->first_name . ' ' . $user->last_name,
+            'backgroundColor' => $user->user_color,
+            //'borderColor' => $user->user_color,
+            //'borderWidth' => 1.5,
+            'data' => $data,
+        ];
+
+        $graph_data['datasets'][] = $dataset;
+
+        return $graph_data;
     }
 }

@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <dashboard
+    <blade-dashboard
         :companies="{{ $companies }}"
         {{-- :newest_works="{{ $newest_works }}" --}}
 
@@ -18,7 +18,7 @@
         :db_count = "{{ $db_count }}"
 
     >
-    </dashboard>
+    </blade-dashboard>
 
 @endsection
 

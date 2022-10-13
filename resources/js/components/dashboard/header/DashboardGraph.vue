@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {Line as LineChartGenerator} from "vue-chartjs";
+import { Line as LineChartGenerator } from "vue-chartjs";
 
 import {
     Chart as ChartJS,
@@ -83,7 +83,7 @@ export default {
             default: () => {
             },
         },
-        
+
         plugins: {
             type: Array,
             default: () => [],
@@ -102,4 +102,6 @@ export default {
 </script>
 
 <style>
+
 </style>
+

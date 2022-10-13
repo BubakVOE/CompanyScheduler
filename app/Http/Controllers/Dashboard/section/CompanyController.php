@@ -17,7 +17,7 @@ class CompanyController extends Controller
     }
 
     //public function createNewCompany(CreateCompanyRequest Request $request)
-    public function createNewCompany(CreateCompanyRequest $request)
+    public function createCompany(CreateCompanyRequest $request)
     {
         if (Company::where('name', '=', $request->input('name'))->exists()) {
             return ['error' => 'exist'];
@@ -89,15 +89,8 @@ class CompanyController extends Controller
         return ['success' => true];
     }
 
-    public function projectsOfCompany($companyId, Request $request)
+    public function showCompany()
     {
-        $company = Company::with('projects.users')->find($companyId);
-
-        $projects = $company->projects->all();
-
-        return view('pages.dashboard.section.projectsOfCompany', [
-            'company_realations' => $company,
-            'projects' => $projects,
-        ]);
+        return view('pages.dashboard.section.projectsOfCompany');
     }
 }

@@ -9,9 +9,10 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Project;
 use App\Models\WorkTime;
+use App\Models\ProjectUsers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ProjectUsers;
+use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\Activitylog\Models\Activity;
 
 
@@ -390,7 +391,7 @@ class DashboardAxiosController extends Controller
 
         $user_id = $request->employee_id;
 
-        // company select == všechno
+        // SPOLEČNOST company select == všechno
         if ($company_id == 'all') {
 
             $companies = Company::all();  // hodit do JobsControlleru
@@ -404,7 +405,7 @@ class DashboardAxiosController extends Controller
             ];
         }
 
-        // company select == id && project == všechno
+        // SPOLEČNOST + PROJEKT company select == id && project == všechno
         if (Company::where('id', $company_id)->exists() && $project_id == 'all') {
 
             $companies = Company::all(); // hodit do JobsControlleru
@@ -423,7 +424,7 @@ class DashboardAxiosController extends Controller
             ];
         }
 
-        //company select -> id ZÁROVEŇ project == všechno
+        // SPOLEČNOST + PROJEKT + UŽIVATEL company select -> id ZÁROVEŇ project == všechno
         if (Company::where('id', $company_id)->exists() && $project_id !== 'all' && $user_id == 'all') {
 
             $companies = Company::all(); // hodit do JobsControlleru
@@ -460,7 +461,7 @@ class DashboardAxiosController extends Controller
                 $employees[] = $job['user'];
             }
 
-            dd($employees);
+            //dd($employees);
 
             return [
                 'companies' => $companies,
@@ -525,85 +526,30 @@ class DashboardAxiosController extends Controller
 
     public function activityLog(Request $request, $name)
     {
-        $subject_name = $request->subject_name;
-        $causer_name = $request->causer_name;
+        // $activities = Activity::first();
 
-    //     $lastActivity = Activity::all()->last(); //returns the last logged activity
-        
-    //     $lastActivity->causer; //returns the model that was passed to `causedBy`;
+        // $test = [];
 
+        // foreach ($activities->properties as $key => $value) {
+        //     $test[] = [$key, $value];
+        // }
+        // $keys = array_keys($test[0][1]);
 
-
-    // //     dd("App\Models"."\" );
-
-    // //    // dd("App\Models\$subject_name);
-
-    //    // $test = Activity::where('subject_type', 'App\Models\'.$subject_type)->get();
-
-    //     $test = Activity::where("subject_type", "App/Models/Company")->get();
-    //     dd($test);
-    
-
-    //     dd(activity()->log('Look, I logged something'));
-
-    //     dD(Activity()->causedBy('User'));
-
-    //     $test = activity()
-    //     ->performedOn($subject_name)
-    //     ->causedBy($causer_name);
-    //     // ->withProperties(['customProperty' => 'customValue'])
-    //     // ->log('Look, I logged something');
-
-
-    //     dd($test);
-
-
-        if ($subject_name == 'all' && $causer_name == 'all') {
-
-
-
-            $activities = Activity::all();
-
-            return [
-                'activities' => $activities,
-            ];
-        } else {
-            return 'test';
-        }
-    
-
-
-        //$activities = Activity::all();
-        //dd($activities->properties);
-
-        // $model = $request->name;
-
-        // dd('App/Models/User');
-
-        // $test = $model::all();
-
-        // dd($test);
 
         // return [
-        //     'success' => true,
-        //     'user_data' => $users_data,
+        //     'activities' => $activities,
+        //     'keys' => $keys,
         // ];
-
-
-
-        $activities = Activity::first();
-
-        $test = [];
-
-        foreach ($activities->properties as $key => $value) {
-            $test[] = [$key, $value];
+        if($request->subject_name === 'all')  {
+            $activities = Activity::get();
+        } else {
+            $activities = Activity::where("subject_type", 'App\\Models\\'.$request->subject_name)->get();
         }
-        $keys = array_keys($test[0][1]);
 
         return [
             'activities' => $activities,
-            'keys' => $keys,
         ];
+
     }
 
     //Dashboard - záznam přihlášení
@@ -680,6 +626,9 @@ class DashboardAxiosController extends Controller
             }
         }
 
+
+        return $employee_date;
+
         // foreach ($works as $work) {
         //     $month = Carbon::make($work->date)->month;
 
@@ -700,7 +649,6 @@ class DashboardAxiosController extends Controller
         //     }
         // }
 
-        return $employee_date;
     }
 
     //Dashboard - PDF
@@ -740,18 +688,12 @@ class DashboardAxiosController extends Controller
 
             $year = Carbon::make($work->date)->format('Y');
 
-            foreach ($works as $work) {
-                $month = Carbon::make($work->date)->month;
-
-                $year = Carbon::make($work->date)->format('Y');
-
-                if (array_key_exists($year, $company_date)) {
-                    if (!in_array($month, $company_date[$year])) {
-                        $company_date[$year][] = $month;
-                    }
-                } else {
-                    $company_date[$year] = [$month];
+            if (array_key_exists($year, $company_date)) {
+                if (!in_array($month, $company_date[$year])) {
+                    $company_date[$year][] = $month;
                 }
+            } else {
+                $company_date[$year] = [$month];
             }
         }
 
@@ -760,11 +702,23 @@ class DashboardAxiosController extends Controller
 
 
 
-
     public function test()
     {
         $users = User::paginate(10);
 
         return response()->json($users);
+    }
+
+    public function getProjectsToCompany($companyId)
+    {
+        $company = Company::with('projects.users')->find($companyId);
+
+        $projects = $company->projects->all();
+
+        return [
+            'success' => true,
+            'company_relations' => $company,
+            'projects' => $projects,
+        ];
     }
 }

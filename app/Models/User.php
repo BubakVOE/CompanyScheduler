@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(WorkTime::class);
     }
 
+    public function project_user()
+    {
+        return $this->belongsToMany(ProjectUsers::class);
+    }
+
     public function projects()
     {
         return $this->belongsToMany(Project::class,
@@ -61,8 +66,8 @@ class User extends Authenticatable
             'project_id');
     }
 
-    public function company()
-    {
-        return $this->belongsToThrough(Company::class, Project::class);
-    }
+    // public function company()
+    // {
+    //     return $this->belongsToThrough(Company::class, Project::class);
+    // }
 }

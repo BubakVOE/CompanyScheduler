@@ -237,8 +237,8 @@
                                         </template>
                                     </select>
 
-                                    <template v-if="errors.project_id">
-                                        <p v-for="error in errors.project_id"
+                                    <template v-if="create_errors.project_id">
+                                        <p v-for="error in create_errors.project_id"
                                             class="alert alert-danger d-flex align-items-center" role="alert">
                                             {{ error }}
                                         </p>
@@ -260,8 +260,8 @@
                                         </template>
                                     </select>
 
-                                    <template v-if="errors.user_id">
-                                        <p v-for="error in errors.user_id"
+                                    <template v-if="create_errors.user_id">
+                                        <p v-for="error in create_errors.user_id"
                                             class="alert alert-danger d-flex align-items-center" role="alert">
                                             {{ error }}
                                         </p>
@@ -276,12 +276,12 @@
                                     <span class="text-danger fw-bolder">*</span>
                                 </label>
 
-                                <input type="text" class="form-control"  placeholder="Šternberk"
+                                <input type="text" class="form-control" placeholder="Šternberk"
                                     v-model="modal_create_job.job">
 
-                                <template v-if="errors.job">
-                                    <p v-for="error in errors.job"
-                                        class="alert alert-danger d-flex align-items-center" role="alert">
+                                <template v-if="create_errors.job">
+                                    <p v-for="error in create_errors.job" class="alert alert-danger d-flex align-items-center"
+                                        role="alert">
                                         {{ error }}
                                     </p>
                                 </template>
@@ -297,8 +297,8 @@
                                     <input type="text" class="form-control" placeholder="8"
                                         v-model="modal_create_job.hours">
 
-                                    <template v-if="errors.hours">
-                                        <p v-for="error in errors.hours"
+                                    <template v-if="create_errors.hours">
+                                        <p v-for="error in create_errors.hours"
                                             class="alert alert-danger d-flex align-items-center" role="alert">
                                             {{ error }}
                                         </p>
@@ -313,8 +313,8 @@
                                     <input type="text" class="form-control" placeholder="150"
                                         v-model="modal_create_job.money_per_hour">
 
-                                    <template v-if="errors.money_per_hour">
-                                        <p v-for="error in errors.money_per_hour"
+                                    <template v-if="create_errors.money_per_hour">
+                                        <p v-for="error in create_errors.money_per_hour"
                                             class="alert alert-danger d-flex align-items-center" role="alert">
                                             {{ error }}
                                         </p>
@@ -331,14 +331,14 @@
                                 <input type="date" class="form-control" placeholder="Vybíralova 19/4"
                                     v-model="modal_create_job.date">
 
-                                
-                                <template v-if="errors.date">
-                                    <p v-for="error in errors.date"
-                                        class="alert alert-danger d-flex align-items-center" role="alert">
+
+                                <template v-if="create_errors.date">
+                                    <p v-for="error in create_errors.date" class="alert alert-danger d-flex align-items-center"
+                                        role="alert">
                                         {{ error }}
                                     </p>
                                 </template>
-                                
+
                             </div>
 
                         </div>
@@ -472,8 +472,7 @@
                                     <span class="text-danger fw-bolder">*</span>
                                 </label>
 
-                                <input type="date" class="form-control"
-                                    v-model="modal_edit_job.date">
+                                <input type="date" class="form-control" v-model="modal_edit_job.date">
 
                                 <template v-if="update_errors.date">
                                     <p v-for="error in update_errors.date"
@@ -519,7 +518,7 @@ export default {
 
     data() {
         return {
-            errors: {},
+            create_errors: {},
             update_errors: {},
 
             companies: {},
@@ -597,11 +596,14 @@ export default {
                             timer: 800,
                         })
                     }
+
+                    this.create_errors = ''
+
                 }).catch(({
                     response
                 }) => {
                     console.log(response.data.errors)
-                    this.errors = response.data.errors
+                    this.create_errors = response.data.errors
                 })
         },
 
@@ -627,6 +629,9 @@ export default {
                         })
 
                     }
+
+                    this.update_errors = ''
+
                 }).catch(({
                     response
                 }) => {

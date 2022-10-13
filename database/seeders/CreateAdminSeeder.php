@@ -16,18 +16,6 @@ class CreateAdminSeeder extends Seeder
     {
         User::create(
             [
-                'first_name' => 'Tomáš',
-                'last_name' => 'Ludwig',
-                'username' => 'administrátor',
-                'mobile' => '730681670',
-                'email' => 'admin@softici.com',
-                'password' => bcrypt('123456789'),
-                'is_admin' => '1',
-            ],
-
-        );
-        User::create(
-            [
                 'first_name' => 'Admin',
                 'last_name' => 'Admin',
                 'username' => 'adminis',

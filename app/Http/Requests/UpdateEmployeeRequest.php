@@ -59,7 +59,6 @@ class UpdateEmployeeRequest extends FormRequest
             'username.max' => 'Přezdívka je moc dlouhá',
             'username.unique' => 'Přezdívka již existuje',
             
-            'password.required' => 'Heslo je požadováno',
             'password.min' => 'Heslo musí obsahovat 8 znaků',
             'password.confirmed' => 'Hesla se neshodují',
 

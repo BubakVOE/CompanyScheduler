@@ -24,4 +24,16 @@ class ProjectUsers extends Model
         ->logOnly(['*']);
     }
 
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+
 }

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function profile(Request $request, $id)
+    public function overall(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
@@ -134,7 +134,7 @@ class UserController extends Controller
         unset($user->work_times);
 
 
-        return view('pages.employee.profile', [
+        return view('pages.employee.header.overall', [
             'user' => $user,
 
             'active' => $active,
@@ -208,8 +208,7 @@ class UserController extends Controller
             }
         }
 
-
-        return view('pages.employee.records', [
+        return view('pages.employee.section.records', [
             'user' => $user,
 
             'active' => json_encode($active ?? null),
@@ -223,149 +222,9 @@ class UserController extends Controller
         ]);
     }
 
-    public function show($id, Request $request)
-    {
-        $user = User::findOrFail($id);
-
-        // přidání avatara uživatelům
-        $avatar = new Avatar(config('laravolt.avatar'));
-
-        $user->avatar = $avatar->create("$user->first_name $user->last_name")->toBase64();
-
-        $works = $user->work_times->sortByDesc('date');
-
-        //  VČEREJŠEK
-        $this_yesterday = Carbon::yesterday()->toDateString();
-
-        $this_yesterday_work = $works->where('date', '=', $this_yesterday);
-
-        $this_yesterday_number = Carbon::yesterday()->day;
-
-        $this_yesterday_earns = 0;
-
-        foreach ($this_yesterday_work as $yesterday_works) {
-            $this_yesterday_earns = $this_yesterday_earns + $yesterday_works->hours * $yesterday_works->money_per_hour;
-        }
-
-        //  MINULÝ TÝDEN
-        $last_week_start = Carbon::now()
-            ->subWeek()
-            ->startOfWeek()
-            ->toDateString();
-
-        $last_week_end = Carbon::now()
-            ->subWeek()
-            ->endOfWeek()
-            ->toDateString();
-
-        $last_week_works = $works->where('date', '>=', $last_week_start)
-            ->where('date', '<=', $last_week_end);
-
-        $last_week_number = Carbon::now()
-            ->subWeek()
-            ->weekOfYear;
-
-        $last_week_earns = 0;
-
-        foreach ($last_week_works as $week_works) {
-            $last_week_earns = $last_week_earns + $week_works->hours * $week_works->money_per_hour;
-        }
-
-        //  MĚSÍC
-        $last_month_start = Carbon::now()
-            ->subMonth()
-            ->startOfMonth()
-            ->toDateString();
-
-        $last_month_end = Carbon::now()
-            ->subMonth()
-            ->endOfMonth()
-            ->toDateString();
-
-        $last_month_works = $works->where('date', '>=', $last_month_start)
-            ->where('date', '<=', $last_month_end);
-
-        $last_month_number = Carbon::now()
-            ->subMonth()
-            ->month;
-
-        $last_month_earns = 0;
-
-        foreach ($last_month_works as $month_works) {
-            $last_month_earns = $last_month_earns + $month_works->hours * $month_works->money_per_hour;
-        }
-
-        // projekty pro uživatele
-        $project_ids = ProjectUsers::where('user_id', $id)->pluck('project_id')->all();
-
-        $project_data = [];
-
-        foreach ($project_ids as $project_id) {
-            $project_data[] = Project::find($project_id);
-        }
-
-        // pokud rok není v URL
-        if ($request->input('year') != null) {
-            $year = $request->input('year');
-        } else {
-            $year = null;
-        }
-
-        if ($request->input('month') != null) {
-            $month = $request->input('month');
-        } else {
-            $month = null;
-        }
-
-        // funkce volána z model/User
-        $works = $user->work_times->sortByDesc('date');
-
-        // Projíždí práci a vezme pouze jeden MĚSÍC
-        $active = [];
-
-        foreach ($works as $wrk) {
-            $m = Carbon::make($wrk->date)->month;
-
-            $y = Carbon::make($wrk->date)->format('Y');
-
-            if (array_key_exists($y, $active)) {
-                if (!in_array($m, $active[$y])) {
-                    $active[$y][] = $m;
-                }
-            } else {
-                $active[$y] = [$m];
-            }
-        }
-
-        // odebrat u User -> worktimes
-        unset($user->work_times);
-
-        return view('pages.employee.show', [
-            'user' => $user,
-
-            'active' => $active,
-
-            'year' => $year ?? null,
-
-            'month' => $month ?? null,
-
-            'project_data' => json_encode($project_data),
-
-            'this_yesterday_earns' => $this_yesterday_earns,
-            'this_yesterday_number' => $this_yesterday_number,
-
-            'last_week_earns' => $last_week_earns,
-            'last_week_number' => $last_week_number,
-
-            'last_month_earns' => $last_month_earns,
-            'last_month_number' => $last_month_number,
-        ]);
-    }
-    
-
     public function settings($id)
     {
-        return view('pages.employee.settings', [
+        return view('pages.employee.other.settings', [
             'user' => $id,
         ]);
     }

@@ -31,17 +31,18 @@ class Project extends Model
         ->logOnly(['*']);
     }
 
+    
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class,
             'project_users',
             'project_id',
             'user_id');
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
     }
 
     public function works()

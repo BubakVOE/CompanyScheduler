@@ -10,15 +10,10 @@
                     <path
                         d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
                 </svg>
-                <span class="fs-4 ms-2">Backups manažér</span>
+                <span class="fs-4 ms-2">Back up manažér</span>
             </div>
             <button @click="backupDB()" class="btn btn-primary"> Download Database</button>
         </header>
-
-
-
-
-
 
         <div class="my-3 p-3 card">
 
@@ -128,11 +123,19 @@ export default {
                             timer: 800,
                         });
 
-                    } else {
+                    } else if(response.data.success == 'exist'){
+                        Swal.fire({
+                            position: 'center',
+                            icon: "warning",
+                            title: "Databáze již byla provedena",
+                            showConfirmButton: true,
+                        });
+                    } 
+                    else {
                         Swal.fire({
                             position: 'center',
                             icon: "error",
-                            title: "Něco se nepovedlo",
+                            title: "Vyskystla se neočekávaná chyba",
                             showConfirmButton: true,
                         });
                     }
@@ -143,31 +146,42 @@ export default {
 
             let url = "/dashboard/backup/" + file.filename + "/delete"
 
+            axios
+                .post(url)
+                .then((response) => {
+                    if (response.data.success == true) {
+                        Swal.fire(
+                            'Success!',
+                            'Databáze byla smazána.',
+                            'success',
 
-            Swal.fire({
-                title: 'Chceš smazat databázi?',
-                text: "Akce je nevratná!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#FF001A',
-                cancelButtonColor: '#9FA2B2',
-                confirmButtonText: 'Smazat!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Success!',
-                        'Databáze byla smazána.',
-                        'success',
+                            axios
+                                .post(url)
+                                .then((response) => {
+                                    this.getDatabase();
 
-                        axios
-                            .post(url)
-                            .then((response) => {
-                                this.getDatabase();
+                                })
+                        )
+                    }
 
-                            })
-                    )
-                }
-            })
+                })
+
+
+
+
+            // Swal.fire({
+            //     title: 'Chceš smazat databázi?',
+            //     text: "Akce je nevratná!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#FF001A',
+            //     cancelButtonColor: '#9FA2B2',
+            //     confirmButtonText: 'Smazat!'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+
+            //     }
+            // })
 
 
         }

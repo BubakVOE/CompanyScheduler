@@ -9,6 +9,4 @@
 >
 </blade-pdf>
 
-
-
 @endsection

@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Dashboard\other;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use File;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 
 class BackupController extends Controller
 {
@@ -24,7 +21,8 @@ class BackupController extends Controller
 
     public function backupDB(Request $request)
     {
-        //dd(File::isFile(storage_path(). "/app/public/db_backup/backup-2022-09-14.sql"));
+        // //dd(File::isFile(storage_path(). "/app/public/db_backup/backup-2022-09-14.sql"));
+
 
         $name = 'backup-'.Carbon::now()->format('Y-m-d').'.sql';
 
@@ -44,12 +42,15 @@ class BackupController extends Controller
         $path = storage_path('app/public/db_backup/').$name;
 
         File::delete($path);
+
+        return ['success' => true];
+
     }
 
-    public function backup()
-    {
-        dd(Artisan::call('backup:run'));
-    }
+    // public function backup()
+    // {
+    //     dd(Artisan::call('backup:run'));
+    // }
 
     // public function db($name)
     // {

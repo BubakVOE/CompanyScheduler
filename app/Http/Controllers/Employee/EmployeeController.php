@@ -70,6 +70,8 @@ class EmployeeController extends Controller
             $employee->address = $request->input('address');
             $employee->apartment = $request->input('apartment');
 
+            $employee->password = Hash::make($request->input('password'));
+
             $employee->save();
 
             return ['success' => true];

@@ -1,7 +1,7 @@
 @extends('layouts.universalLayouts')
 @section('content')
-    <blade-create-process 
+    <blade-process 
         :users = '{{ $users }}'
     >
-    <blade-create-process />
+    <blade-process />
     @endsection

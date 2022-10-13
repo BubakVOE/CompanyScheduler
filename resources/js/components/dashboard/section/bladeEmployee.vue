@@ -191,7 +191,7 @@
                                                 </button>
                                             </form>
 
-                                            <a class="btn btn-secondary" :href="'/employee/' + employee.id + '/show'"
+                                            <a class="btn btn-secondary" :href="'/employee/' + employee.id + '/overall'"
                                                 target="_blank">
                                                 Zobrazit
                                             </a>
@@ -266,7 +266,7 @@
                                             </button>
                                         </form>
 
-                                        <a class="btn btn-secondary" :href="'/employee/' + employee.id + '/show'"
+                                        <a class="btn btn-secondary" :href="'/employee/' + employee.id + '/overall'"
                                             target="_blank">
                                             Zobrazit
                                         </a>
@@ -323,10 +323,12 @@
                                         <input type="text" class="form-control" placeholder="Tomas" name="first_name"
                                             v-model="modal_create_employee.first_name" />
 
-                                        <div v-if="errors.first_name"
-                                            class="alert alert-danger d-flex align-items-center" role="alert">
-                                            {{ errors . first_name[0] }}
-                                        </div>
+                                        <template v-if="create_user_errors.first_name">
+                                            <p v-for="error in create_user_errors.first_name"
+                                                class="alert alert-danger d-flex align-items-center" role="alert">
+                                                {{ error }}
+                                            </p>
+                                        </template>
 
                                     </div>
 
@@ -342,10 +344,12 @@
                                         <input type="text" class="form-control" placeholder="Novak" name="last_name"
                                             v-model="modal_create_employee.last_name" />
 
-                                        <div v-if="errors.last_name"
-                                            class="alert alert-danger d-flex align-items-center" role="alert">
-                                            {{ errors . last_name[0] }}
-                                        </div>
+                                        <template v-if="create_user_errors.last_name">
+                                            <p v-for="error in create_user_errors.last_name"
+                                                class="alert alert-danger d-flex align-items-center" role="alert">
+                                                {{ error }}
+                                            </p>
+                                        </template>
 
                                     </div>
 
@@ -364,10 +368,12 @@
                                         <input type="text" class="form-control" placeholder="Genius"
                                             v-model="modal_create_employee.username" />
 
-                                        <div v-if="errors.username" class="alert alert-danger d-flex align-items-center"
-                                            role="alert">
-                                            {{ errors . username[0] }}
-                                        </div>
+                                        <template v-if="create_user_errors.username">
+                                            <p v-for="error in create_user_errors.username"
+                                                class="alert alert-danger d-flex align-items-center" role="alert">
+                                                {{ error }}
+                                            </p>
+                                        </template>
 
                                     </div>
                                 </div>
@@ -385,10 +391,12 @@
                                         <input type="text" class="form-control" placeholder="tomasnovak@seznam.cz"
                                             name="email" v-model="modal_create_employee.email" />
 
-                                        <div v-if="errors.email" class="alert alert-danger d-flex align-items-center"
-                                            role="alert">
-                                            {{ errors . email[0] }}
-                                        </div>
+                                        <template v-if="create_user_errors.email">
+                                            <p v-for="error in create_user_errors.email"
+                                                class="alert alert-danger d-flex align-items-center" role="alert">
+                                                {{ error }}
+                                            </p>
+                                        </template>
                                     </div>
                                 </div>
 
@@ -406,10 +414,12 @@
                                             name="mobile" v-model="modal_create_employee.mobile"
                                             autocomplete="mobile" />
 
-                                        <div v-if="errors.mobile" class="alert alert-danger d-flex align-items-center"
-                                            role="alert">
-                                            {{ errors . mobile[0] }}
-                                        </div>
+                                        <template v-if="create_user_errors.mobile">
+                                            <p v-for="error in create_user_errors.mobile"
+                                                class="alert alert-danger d-flex align-items-center" role="alert">
+                                                {{ error }}
+                                            </p>
+                                        </template>
 
                                     </div>
                                 </div>
@@ -440,9 +450,9 @@
                                         <input type="password" class="form-control" placeholder="*********"
                                             v-model="modal_create_employee.password_confirmation" />
 
-                                        <template v-if="errors.password">
+                                        <template v-if="create_user_errors.password">
 
-                                            <p v-for="error in errors.password"
+                                            <p v-for="error in create_user_errors.password"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -456,7 +466,7 @@
                             <div class="col">
 
                                 <h1 class="text-center">
-                                    Navíc informace
+                                    Dodatečné info
                                 </h1>
 
                                 <div class="modal-body container d-grid">
@@ -467,8 +477,8 @@
                                     <input type="text" class="form-control" placeholder="Vybiralova"
                                         v-model="modal_create_employee.address" />
 
-                                    <template v-if="errors.address">
-                                        <p v-for="error in errors.address"
+                                    <template v-if="create_user_errors.address">
+                                        <p v-for="error in create_user_errors.address"
                                             class="alert alert-danger d-flex align-items-center" role="alert">
                                             {{ error }}
                                         </p>
@@ -485,8 +495,8 @@
                                         <input type="text" class="form-control" placeholder="19/4"
                                             v-model="modal_create_employee.apartment" />
 
-                                        <template v-if="errors.apartment">
-                                            <p v-for="error in errors.apartment"
+                                        <template v-if="create_user_errors.apartment">
+                                            <p v-for="error in create_user_errors.apartment"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -503,8 +513,8 @@
                                         <input type="number" class="form-control" placeholder="150"
                                             v-model="modal_create_employee.money_per_hour" />
 
-                                        <template v-if="errors.money_per_hour">
-                                            <p v-for="error in errors.money_per_hour"
+                                        <template v-if="create_user_errors.money_per_hour">
+                                            <p v-for="error in create_user_errors.money_per_hour"
                                                 class="alert alert-danger d-flex align-items-center" role="alert">
                                                 {{ error }}
                                             </p>
@@ -605,9 +615,9 @@
                                                 <input type="text" class="form-control" placeholder="Novak"
                                                     v-model="modal_update_employee.last_name" />
 
-                                                <template v-if="update_errors.last_name">
+                                                <template v-if="update_user_errors.last_name">
 
-                                                    <p v-for="error in update_errors.last_name"
+                                                    <p v-for="error in update_user_errors.last_name"
                                                         class="alert alert-danger d-flex align-items-center"
                                                         role="alert">
                                                         {{ error }}
@@ -628,7 +638,7 @@
                                                     </span>
                                                 </label>
 
-                                                <input type="password" class="form-control"
+                                                <input type="password" class="form-control" placeholder="*********"
                                                     v-model="modal_update_employee.password" />
                                             </div>
 
@@ -641,12 +651,12 @@
                                                     </span>
                                                 </label>
 
-                                                <input type="password" class="form-control" 
-                                                    v-model="modal_update_employee.password_confirm" />
+                                                <input type="password" class="form-control"
+                                                    v-model="modal_update_employee.password_confirmation" />
 
-                                                <template v-if="update_errors.password">
+                                                <template v-if="update_user_errors.password">
 
-                                                    <p v-for="error in update_errors.password"
+                                                    <p v-for="error in update_user_errors.password"
                                                         class="alert alert-danger d-flex align-items-center"
                                                         role="alert">
                                                         {{ error }}
@@ -672,9 +682,9 @@
                                                     v-model="modal_update_employee.username" />
 
 
-                                                <template v-if="update_errors.username">
+                                                <template v-if="update_user_errors.username">
 
-                                                    <p v-for="error in update_errors.username"
+                                                    <p v-for="error in update_user_errors.username"
                                                         class="alert alert-danger d-flex align-items-center"
                                                         role="alert">
                                                         {{ error }}
@@ -700,9 +710,9 @@
                                                     v-model="modal_update_employee.email" />
 
 
-                                                <template v-if="update_errors.email">
+                                                <template v-if="update_user_errors.email">
 
-                                                    <p v-for="error in update_errors.email"
+                                                    <p v-for="error in update_user_errors.email"
                                                         class="alert alert-danger d-flex align-items-center"
                                                         role="alert">
                                                         {{ error }}
@@ -727,9 +737,9 @@
                                                     v-model="modal_update_employee.mobile" />
 
 
-                                                <template v-if="update_errors.mobile">
+                                                <template v-if="update_user_errors.mobile">
 
-                                                    <p v-for="error in update_errors.mobile"
+                                                    <p v-for="error in update_user_errors.mobile"
                                                         class="alert alert-danger d-flex align-items-center"
                                                         role="alert">
                                                         {{ error }}
@@ -756,9 +766,9 @@
                                                         v-model="modal_update_employee.money_per_hour" />
 
 
-                                                    <template v-if="update_errors.money_per_hour">
+                                                    <template v-if="update_user_errors.money_per_hour">
 
-                                                        <p v-for="error in update_errors.money_per_hour"
+                                                        <p v-for="error in update_user_errors.money_per_hour"
                                                             class="alert alert-danger d-flex align-items-center"
                                                             role="alert">
                                                             {{ error }}
@@ -777,9 +787,9 @@
                                                         v-model="modal_update_employee.address" />
 
 
-                                                    <template v-if="update_errors.address">
+                                                    <template v-if="update_user_errors.address">
 
-                                                        <p v-for="error in update_errors.address"
+                                                        <p v-for="error in update_user_errors.address"
                                                             class="alert alert-danger d-flex align-items-center"
                                                             role="alert">
                                                             {{ error }}
@@ -798,9 +808,9 @@
                                                         v-model="modal_update_employee.apartment" />
 
 
-                                                    <template v-if="update_errors.apartment">
+                                                    <template v-if="update_user_errors.apartment">
 
-                                                        <p v-for="error in update_errors.apartment"
+                                                        <p v-for="error in update_user_errors.apartment"
                                                             class="alert alert-danger d-flex align-items-center"
                                                             role="alert">
                                                             {{ error }}
@@ -906,12 +916,12 @@
                                                         </select>
 
                                                         <template v-if="create_user_to_project_errors.project_id">
-                                                                <p v-for="error in create_user_to_project_errors.project_id"
-                                                                    class="alert alert-danger d-flex align-items-center"
-                                                                    role="alert">
-                                                                    {{ error }}
-                                                                </p>
-                                                            </template>
+                                                            <p v-for="error in create_user_to_project_errors.project_id"
+                                                                class="alert alert-danger d-flex align-items-center"
+                                                                role="alert">
+                                                                {{ error }}
+                                                            </p>
+                                                        </template>
 
                                                     </div>
 
@@ -1037,9 +1047,9 @@ export default {
 
             },
 
-            errors: {},
+            create_user_errors: {},
 
-            update_errors: {},
+            update_user_errors: {},
 
             create_user_to_project_errors: {},
         }
@@ -1236,6 +1246,9 @@ export default {
                             showConfirmButton: false,
                             timer: 1000
                         })
+
+
+                        this.update_user_errors= ''
                     }
                     if (response.data.success == false) {
                         Swal.fire({
@@ -1249,7 +1262,7 @@ export default {
                     response
                 }) => {
                     console.log(response.data.errors)
-                    this.update_errors = response.data.errors
+                    this.update_user_errors = response.data.errors
                 })
         },
 
@@ -1273,12 +1286,14 @@ export default {
                             showConfirmButton: false,
                             timer: 1000
                         })
+
+                        this.create_user_errors = ''
                     }
                 }).catch(({
                     response
                 }) => {
                     console.log(response.data.errors)
-                    this.errors = response.data.errors
+                    this.create_user_errors = response.data.errors
                 })
         },
 

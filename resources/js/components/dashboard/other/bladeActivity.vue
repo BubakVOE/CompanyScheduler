@@ -35,7 +35,7 @@
                     </template>
                 </select>
 
-                <h1 class="display-5 fw-bold">Vyber model(causer)</h1>
+                <!-- <h1 class="display-5 fw-bold">Vyber model(causer)</h1>
 
                 <select class="btn btn-sm btn-outline-secondary dropdown-toggle m-5" v-model="causer_name"
                     @change="activityLog()">
@@ -49,7 +49,7 @@
                             {{ model }}
                         </option>
                     </template>
-                </select>
+                </select> -->
 
             </div>
         </div>
@@ -144,10 +144,28 @@
 
                             <td class="text-center d-flex">
                                 <div class="me-1">
-                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editActivity" @click="activityModal(activity)">
-                                        edit
-                                    </button>
+
+                                    <template v-if="activity.description == 'updated'">
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#updatedActivity" @click="modalUpdatedActivity(activity)">
+                                            edit
+                                        </button>
+                                    </template>
+
+                                    <template v-if="activity.description == 'created'">
+                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#createdActivity" @click="modalCreatedActivity(activity)">
+                                            edit
+                                        </button>
+                                    </template>
+
+                                    <template v-if="activity.description == 'deleted'">
+                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deletedActivity" @click="modalDeletedActivity(activity)">
+                                            edit
+                                        </button>
+                                    </template>
+
                                 </div>
 
                                 <div class="ms-1">
@@ -163,7 +181,90 @@
             </div>
         </div>
 
-        <div class="modal fade" id="editActivity" tabindex="-1" aria-labelledby="editActivity" aria-hidden="true">
+        <div class="modal fade" id="updatedActivity" tabindex="-1" aria-labelledby="updatedActivity" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-center border-2 border-danger">
+                        <h5 class="modal-title border-2 border-danger">
+                            modal
+                        </h5>
+
+                        <h4 class="text-center d-flex justify-content-center mx-5">
+                            Detaily
+                        </h4>
+
+                        <button id="closeCreate" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body ">
+                        čaaaaaaau
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="createdActivity" tabindex="-1" aria-labelledby="createdActivity" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-center border-2 border-danger">
+                        <h5 class="modal-title border-2 border-danger">
+                            modal
+                        </h5>
+
+                        <h4 class="text-center d-flex justify-content-center mx-5">
+                            Detaily
+                        </h4>
+
+                        <button id="closeCreate" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body ">
+                        čaaaaaaau
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="deletedActivity" tabindex="-1" aria-labelledby="deletedActivity" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-center border-2 border-danger">
+                        <h5 class="modal-title border-2 border-danger">
+                            modal
+                        </h5>
+
+                        <h4 class="text-center d-flex justify-content-center mx-5">
+                            Detaily
+                        </h4>
+
+                        <button id="closeCreate" type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body ">
+                        čaaaaaaau
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="modal fade" id="editActivity" tabindex="-1" aria-labelledby="editActivity" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-center border-2 border-danger">
@@ -298,7 +399,7 @@
                             </div>
                         </template>
 
-                                    <!-- <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
+                        <div class="row row-cols-1 row-cols-md-4 mb-3 text-center">
 
                                         <div class="col">
                                             <div class="card mb-4 rounded-3 shadow-sm">
@@ -376,19 +477,19 @@
                                         </div>
                                     </div> -->
 
-                                    <!-- {{ activity_modal.properties.old.id }}
+        <!-- {{ activity_modal.properties.old.id }}
 
                                     <template v-for="test in activity_modal.properties.old">
                                         {{ test }} <br><br><br><br>
                                     </template>
                                     {{ activity_modal.properties }} -->
 
-                                    <!-- <template v-for="test in activity_modal.old">
+        <!-- <template v-for="test in activity_modal.old">
                                         {{ test }} <br>
                                     </template> -->
 
 
-<!-- 
+        <!-- 
                         {{ activity_modal.id }}
                         {{ activity_modal.description }}
                         <br>
@@ -396,7 +497,7 @@
                         <br>
                          -->
 
-
+        <!-- 
                     </div>
 
                     <div class="modal-footer">
@@ -404,7 +505,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  -->
 
 
     </div>
@@ -427,6 +528,10 @@ export default {
 
             models: [],
 
+            modal_updated_activity: {},
+            modal_created_activity: {},
+            modal_deleted_activity: {},
+
         }
     },
 
@@ -437,6 +542,11 @@ export default {
     },
 
     methods: {
+
+        activityModal(activity) {
+            this.activity_modal = activity
+        },
+
         //Our method to GET results from a Laravel endpoint
 
         // getModels(page = 1) {
@@ -456,8 +566,19 @@ export default {
                 })
         },
 
-        activityModal(activity) {
-            this.activity_modal = activity
+
+
+
+        modalUpdatedActivity(activity) {
+            this.modal_updated_activity = activity
+        },
+
+        modalCreatedActivity(activity) {
+            this.modal_created_activity = activity
+        },
+
+        modalDeletedActivity(activity) {
+            this.modal_deleted_activity = activity
         },
 
         activityLog() {

@@ -25,7 +25,7 @@ class CreateCompanyRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'file' => ['required', 'file', 'mimes:jpeg,png,doc,docs,pdf',],    
+            'file' => ['file', 'mimes:jpeg,png,doc,docs,pdf',],    
             'color' => ['required'],
         ];
     }
@@ -33,11 +33,11 @@ class CreateCompanyRequest extends FormRequest
     public function messages()
     {
         return[
-            'name.required' => 'name je požadováno',
+            'name.required' => 'Název je požadován',
 
             'file.required' => 'Logo je požadováno',
-            'file.file' => 'Nahrej logo společnosti',
-            'file.mimes' => 'Podporované formáty: jpeg,png,doc,docs,pdf',
+            'file.file' => 'Logo je požadované',
+            'file.mimes' => 'Podporované formáty: jpeg,png',
             //'file.max' => 'cover_path je přílíš velký',
 
             'color.required' => 'company_color je požadováno',
